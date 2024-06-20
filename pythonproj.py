@@ -1,6 +1,4 @@
 import _sqlite3
-
-"""Creating a database and table in sqlite3 to store the contact information"""
 mydb = _sqlite3.connect("contactbook.db")
 cur = mydb.cursor()
 
@@ -10,15 +8,13 @@ cur.execute(create_table)
 
 
 def input_data():
-    """This function creates new contacts and stores them into the database.
-    If the phone number already exists in the table, it will not allow the user to save the contact.
-    Phone numbers are unique in this program. If any of the fields were entered black, it will not save the contact"""
+   
     name = input("Enter name:\n")
     number = input("Enter phone number:\n")
     address = input("Enter address:\n")
     email = input("Enter email id:\n")
     data_fetch = "select * from contacts_table where number = ?"
-    cur.execute(data_fetch, (number,))  # stored as tuple
+    cur.execute(data_fetch, (number,)) 
     result = cur.fetchall()
     if result:
         print("Number already exists. Please enter new")
@@ -34,14 +30,13 @@ def input_data():
 
 
 def data_search():
-    """This function allows users to search for contacts from the contact book.
-        They can either search based on contact name or phone number."""
+  
     choice = input("Search data based on: 1.Name\t2.Phone number\n")
     if choice == '1':
         name = input("Enter name of saved person: \n")
         data_fetch = "select * from contacts_table where name = ?"
-        cur.execute(data_fetch, (name,))  #stored as tuple
-        result = cur.fetchall()  #returns as list of tuples
+        cur.execute(data_fetch, (name,))  
+        result = cur.fetchall()  
     elif choice == '2':
         numb = input("Enter phone number of saved person: \n")
         data_fetch = "select * from contacts_table where number = ?"
@@ -57,7 +52,7 @@ def data_search():
 
 
 def view_all():
-    """This function displays all the contacts that exist in the contact book"""
+   
     cur.execute("select * from contacts_table")
     rows = cur.fetchall()
     for row in rows:
@@ -65,14 +60,11 @@ def view_all():
 
 
 def update_rec():
-    """This function allows users to update the contact information.
-    Searches for the the contact based on phone number checks if the phone number exists. If exists, it
-    allows you to update any contact info.
-    If updated phone number already exists in the contact book, it will not allow this update."""
+   
     numb = input("Enter phone number of contact you'd like to update\n")
     data_fetch = "select * from contacts_table where number = ?"
-    cur.execute(data_fetch, (numb,))  # stored as tuple
-    result = cur.fetchall()  # returns as list of tuples
+    cur.execute(data_fetch, (numb,))  
+    result = cur.fetchall()  
     if result:
         choice = input("What would you like to update?1.Name\t2.Phone number\t3.Address\t4.Email\t5.Exit")
         if choice == '1':
@@ -116,12 +108,11 @@ def update_rec():
 
 
 def delete_rec():
-    """This function allows the user to delete a contact from the contact book.
-    Searches for the the contact based on phone number and checks if the phone number exists. If exists, it deletes"""
+   
     nmb = input("Enter phone number of contact\n")
     data_fetch = "select * from contacts_table where number = ?"
-    cur.execute(data_fetch, (nmb,))  # stored as tuple
-    result = cur.fetchall()  # returns as list of tuples
+    cur.execute(data_fetch, (nmb,))
+    result = cur.fetchall()  
     if result:
         data_delete = "delete from contacts_table where number = ?"
         cur.execute(data_delete, (nmb,))
